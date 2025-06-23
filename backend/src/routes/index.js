@@ -29,4 +29,4 @@ router.all('*', (ctx) => {
   };
 });
 
-export default router;
+module.exports = router;

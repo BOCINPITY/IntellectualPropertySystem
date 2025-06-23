@@ -2,8 +2,8 @@
   "name": "ip-system-backend",
   "version": "1.0.0",
   "description": "知识产权管理系统后端服务",
+  "type": "commonjs",
   "main": "src/app.js",
-  "type": "module",
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",

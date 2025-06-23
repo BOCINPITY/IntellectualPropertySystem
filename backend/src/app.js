@@ -1,12 +1,12 @@
-import Koa from 'koa';
-import cors from '@koa/cors';
-import helmet from 'koa-helmet';
-import logger from 'koa-logger';
-import bodyParser from 'koa-bodyparser';
-import router from './routes/index.js';
-import { sequelize } from '../config/database.js';
-import errorHandler from './middlewares/errorHandler.js';
-import dotenv from 'dotenv';
+const Koa = require('koa');
+const cors = require('@koa/cors');
+const helmet = require('koa-helmet');
+const logger = require('koa-logger');
+const bodyParser = require('koa-bodyparser');
+const router = require('./routes/index.js');
+const { sequelize } = require('../config/database.js');
+const errorHandler = require('./middlewares/errorHandler.js');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
@@ -40,4 +40,4 @@ app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
 });
 
-export default app;
+module.exports = app;

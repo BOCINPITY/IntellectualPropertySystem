@@ -1,10 +1,10 @@
-import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
+const { Sequelize } = require('sequelize');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
 // 初始化Sequelize实例
-export const sequelize = new Sequelize(
+const sequelize = new Sequelize(
   process.env.DB_NAME || 'intellectual_property',
   process.env.DB_USER || 'ipadmin',
   process.env.DB_PASSWORD || 'SecurePass123!',
@@ -27,10 +27,12 @@ export const sequelize = new Sequelize(
 );
 
 // 模型关联函数
-export const associateModels = () => {
+const associateModels = () => {
   const models = sequelize.models;
   // 在这里定义模型之间的关联关系
   // 例如: models.User.hasMany(models.Patent);
 };
 
-export default sequelize;
+module.exports = sequelize;
+module.exports.sequelize = sequelize;
+module.exports.associateModels = associateModels;
