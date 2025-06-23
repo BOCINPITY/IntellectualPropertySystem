@@ -1,0 +1,44 @@
+FROM node:20-alpine AS development
+
+WORKDIR /app
+
+# 复制package.json和package-lock.json
+COPY package*.json ./
+
+# 安装依赖
+RUN npm ci
+
+# 复制项目文件
+COPY . .
+
+# 创建必要的目录
+RUN mkdir -p src/logs src/uploads
+
+# 暴露端口
+EXPOSE 3001
+
+# 启动开发服务器
+CMD ["npm", "run", "dev"]
+
+# 生产环境构建阶段
+FROM node:20-alpine AS production
+
+WORKDIR /app
+
+# 复制package.json和package-lock.json
+COPY package*.json ./
+
+# 安装生产依赖
+RUN npm ci --only=production
+
+# 复制项目文件
+COPY . .
+
+# 创建必要的目录
+RUN mkdir -p src/logs src/uploads
+
+# 暴露端口
+EXPOSE 3001
+
+# 启动生产服务器
+CMD ["npm", "start"]

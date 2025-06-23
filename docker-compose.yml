@@ -1,0 +1,76 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ip-system-db
+    environment:
+      POSTGRES_USER: ipadmin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-SecurePass123!}
+      POSTGRES_DB: intellectual_property
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ipadmin -d intellectual_property"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: ip-system-api
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ipadmin
+      DB_PASSWORD: ${DB_PASSWORD:-SecurePass123!}
+      DB_NAME: intellectual_property
+      JWT_SECRET: ${JWT_SECRET:-your_jwt_secret_key_here}
+      JWT_EXPIRES_IN: 8h
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: ip-system-ui
+    environment:
+      NODE_ENV: development
+      VITE_API_URL: http://localhost:3001/api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: ip-system-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/dist:/usr/share/nginx/html
+    depends_on:
+      - frontend
+    restart: unless-stopped
+
+volumes:
+  pgdata:

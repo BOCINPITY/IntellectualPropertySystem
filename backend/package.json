@@ -1,0 +1,40 @@
+{
+  "name": "ip-system-backend",
+  "version": "1.0.0",
+  "description": "知识产权管理系统后端服务",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "build": "echo 'No build required for Node.js backend'",
+    "migrate": "sequelize-cli db:migrate",
+    "migrate:undo": "sequelize-cli db:migrate:undo",
+    "seed": "sequelize-cli db:seed:all",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@koa/cors": "^5.0.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "jsonwebtoken": "^9.0.2",
+    "koa": "^2.14.2",
+    "koa-bodyparser": "^4.4.1",
+    "koa-helmet": "^7.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^12.0.1",
+    "koa-validator": "^0.6.4",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.35.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "sequelize-cli": "^6.6.1",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
